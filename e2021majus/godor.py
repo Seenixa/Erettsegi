@@ -1,6 +1,4 @@
 
-print("A program fut")
-
 def readFile(textFile):
     file = open(textFile, 'r')
     contents = file.readlines()
@@ -54,12 +52,77 @@ def writePitsToFile():
     file.close
     return numberOfHoles
 
+def checkIfPit(atDistance):
+    if int(getDepth(atDistance)) == 0:
+        return "Az adott helyen nincs gödör."
+    else: return ""
+
+def getPitStartFromMiddle(fromDistance):
+    if checkIfPit(fromDistance) == "":
+        distance = int(fromDistance)
+        while int(getDepth(distance - 1)) != 0:
+            distance -= 1
+            if distance <= 0:
+                return
+        return distance + 1
+
+def getPitEndFromMiddle(fromDistance):
+    if checkIfPit(fromDistance) == "":
+        distance = int(fromDistance)
+        while int(getDepth(distance + 1)) != 0:
+            distance += 1
+            if distance == len(txtContents):
+                return
+        return distance + 1
+
+def checkMonotonity(pitStart, pitEnd):
+    distance = pitStart
+    while int(getDepth(distance)) <= int(getDepth(distance + 1)):
+        distance += 1
+    if int(getDepth(distance + 1)) < int(getDepth(distance)):
+        monotonityFromStart = distance
+    distance = pitEnd
+    while int(getDepth(distance)) <= int(getDepth(distance - 1)):
+        distance -= 1
+    if int(getDepth(distance - 1)) < int(getDepth(distance)):
+        monotonityFromEnd = distance
+    if monotonityFromStart > monotonityFromEnd:
+        return True
+    else:
+        return False
+
+def getMaxDepth(pitStartingPoint):
+    maxDepth = 0
+    distance = pitStartingPoint
+    while int(getDepth(distance)) != 0:
+        if int(getDepth(distance)) > maxDepth:
+            maxDepth = int(getDepth(distance))
+        distance += 1
+    return maxDepth
+     
+def getPitVolume(pitStartingPoint):
+    volume = int(getDepth(pitStartingPoint)) * 10
+    distance = pitStartingPoint
+    while int(getDepth(distance)) != 0:
+        volume += int(getDepth(distance)) * 10
+        distance += 1
+    return volume
+
+def getWaterVolume(pitStartingPoint):
+    volume = (int(getDepth(pitStartingPoint)) - 1) * 10
+    distance = pitStartingPoint
+    while int(getDepth(distance)) != 0:
+        volume += (int(getDepth(distance)) - 1) * 10
+        distance += 1
+    return volume
+
 txtContents = readFile('melyseg.txt')
 print("\n1. feladat:")
 print("A file " + str(len(txtContents)) + " adatot tartalmaz")
 
 print("\n2. feladat:")
-depth = 8 # getDepth(input("Távolság: ")) #
+getDistance = input("Távolság: ")
+depth = getDepth(getDistance) 
 print("A godor melysege a megadott távolságba: " + str(depth)) 
 
 print("\n3. feladat:")
@@ -67,3 +130,24 @@ print("A talaj érintetlen része: ""{:.2f}".format(float(getUndamagedPercentage
 
 print("\n5. feladat")
 print("A gödrök száma: " + str(writePitsToFile()))
+
+print("\n6. feladat:")
+print(checkIfPit(getDistance))
+if checkIfPit(getDistance) == "":
+    print("a)")
+    print("A gödör " + str(getPitStartFromMiddle(getDistance)) + " méternél kezdődik és " + str(getPitEndFromMiddle(getDistance)) + " méternél ér véget.")
+
+    print("\nb)")
+    if checkMonotonity(getPitStartFromMiddle(getDistance), getPitEndFromMiddle(getDistance)):
+        print("Folyamatosan Mélyül.")
+    else:
+        print("Nem mélyül folyamatosan.")
+
+    print("\nc)")
+    print("A gödör legnagyobb mélysége: "  + str(getMaxDepth(getPitStartFromMiddle(getDistance))))
+
+    print("\nd)")
+    print("A gödör térfogata: " + str(getPitVolume(getPitStartFromMiddle(getDistance))) + " m^3")
+
+    print("\ne)")
+    print("A gödör vízbefogadó képessége: " + str(getWaterVolume(getPitStartFromMiddle(getDistance))) + " m^3")
