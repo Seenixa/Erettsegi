@@ -6,7 +6,7 @@ def readFile(textFile):
     return contents
 
 def getDepth(distance):
-    return txtContents[int(distance)]
+        return txtContents[int(distance)]
 
 def getUndamagedPercentage():
     undamaged = 0
@@ -122,6 +122,9 @@ print("A file " + str(len(txtContents)) + " adatot tartalmaz")
 
 print("\n2. feladat:")
 getDistance = input("Távolság: ")
+if int(getDistance) > len(txtContents) or int(getDistance) < 0:
+    getDistance = '7'
+    print("A kért adat az adott helyről nincs megadva. Alapérték: 7")
 depth = getDepth(getDistance) 
 print("A godor melysege a megadott távolságba: " + str(depth)) 
 
