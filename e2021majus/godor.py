@@ -151,3 +151,5 @@ if checkIfPit(getDistance) == "":
 
     print("\ne)")
     print("A gödör vízbefogadó képessége: " + str(getWaterVolume(getPitStartFromMiddle(getDistance))) + " m^3")
+
+input("Enterre kilép.")
