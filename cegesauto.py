@@ -142,8 +142,6 @@ print(distanceSingle(textContents))
 #7. Feladat
 print("7. Feladat")
 licensePlateNumber = input("Rendszám: ")
-if int(licensePlateNumber[3:6]) > 310:
-    print("szar rendszámot adtál")
 
 print(writeJourneyInfo(textContents, licensePlateNumber))
 
